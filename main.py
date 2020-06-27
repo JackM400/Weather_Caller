@@ -56,6 +56,21 @@ def process_json_element(json_element):
     return "{},{},{},{}".format(overall, temp, humidity, wind_speed)
 
 
+def get_header():
+    return "Date,Location,Overall,Temperature,Humidity,Wind_Speed\n"
+
+
+def csv_check():
+    check = os.path.isfile("./weather_data.csv")
+    if check:
+        return "weather_data.csv"
+    else:
+        file = open("weather_data.csv", "a+")
+        file.write(get_header())
+        file.close()
+        return "weather_data.csv"
+
+
 def main():
     weather_api_key = get_api_key()
     targets = get_targets()
@@ -65,6 +80,7 @@ def main():
 
     for target_element in target_elements:
         print("{} : {}".format(target_element.ljust(15), target_elements[target_element]))
+    csv_file = csv_check()
 
 
 
