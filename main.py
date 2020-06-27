@@ -71,6 +71,15 @@ def csv_check():
         return "weather_data.csv"
 
 
+def populate_csv(target, write_data):
+    file = open(target, "a+")
+    current = datetime.today().strftime('%d-%m-%Y')
+    for element in write_data:
+        line_element = "{},{},{}\n".format(current, element, write_data[element])
+        file.write(line_element)
+    file.close()
+
+
 def main():
     weather_api_key = get_api_key()
     targets = get_targets()
@@ -81,7 +90,7 @@ def main():
     for target_element in target_elements:
         print("{} : {}".format(target_element.ljust(15), target_elements[target_element]))
     csv_file = csv_check()
-
+    populate_csv(csv_file, target_elements)
 
 
 main()
