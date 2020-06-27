@@ -2,6 +2,8 @@ import json
 import requests
 import sys
 import os
+import schedule
+import time
 from datetime import datetime
 
 
@@ -39,6 +41,7 @@ def print_json_pretty(data):
 def process_json(json_data):
     result = {}
     for element in json_data:
+        process_json_element(json_data[element])
         result[element] = process_json_element(json_data[element])
     return result
 
@@ -78,6 +81,7 @@ def populate_csv(target, write_data):
         line_element = "{},{},{}\n".format(current, element, write_data[element])
         file.write(line_element)
     file.close()
+    print("file closed")
 
 
 def main():
@@ -93,4 +97,8 @@ def main():
     populate_csv(csv_file, target_elements)
 
 
-main()
+schedule.every().day.at("12:01").do(main)
+
+while 1:
+    schedule.run_pending()
+    time.sleep(1)
