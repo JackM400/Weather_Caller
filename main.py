@@ -1,6 +1,8 @@
 import json
 import requests
 import sys
+import os
+from datetime import datetime
 
 
 def get_api_key():
@@ -37,12 +39,21 @@ def print_json_pretty(data):
 def process_json(json_data):
     result = {}
     for element in json_data:
-        print("LOCATION  : {}".format(element))
         result[element] = process_json_element(json_data[element])
     return result
 
 
 def process_json_element(json_element):
+    weather_data = json_element["weather"]
+    main_data = json_element["main"]
+    wind_data = json_element["wind"]
+
+    overall = weather_data[0]["description"]
+    temp = int(main_data["temp"])
+    humidity = int(main_data["humidity"])
+    wind_speed = int(wind_data["speed"])
+
+    return "{},{},{},{}".format(overall, temp, humidity, wind_speed)
 
 
 def main():
@@ -54,6 +65,7 @@ def main():
 
     for target_element in target_elements:
         print("{} : {}".format(target_element.ljust(15), target_elements[target_element]))
+
 
 
 main()
