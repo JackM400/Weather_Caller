@@ -2,30 +2,34 @@ import json
 import requests
 import sys
 
-weather_api_key = ""
-targets = []
-result = None
-formatted_result = ""
-print("API: " + weather_api_key)
-print(result)
-print(formatted_result)
+
+def get_api_key():
+    file = open("key_location")
+    for line in file:
+        return line.strip()
 
 
 def get_targets():
+    targets = []
     file = open("monitor_targets")
     for element in file:
-        print(element)
-        targets.append(element)
+        targets.append(element.strip())
+    return targets
 
 
-def print_targets():
-    for element in targets:
-        print(element)
+def get_data(location, weather_api_key):
+    url = "https://api.openweathermap.org/data/2.5/weather?q={}&appid={}".format(location, weather_api_key)
+    url_result = requests.get(url)
+    return url_result.json()
 
 
-def get_data(element):
-    print(element)
+
+def main():
+    weather_api_key = get_api_key()
+    targets = get_targets()
+    data = []
+    for element in data:
+        print(data[element])
 
 
-get_targets()
-print_targets()
+main()
